@@ -67,22 +67,7 @@ const html = `<div class="arrows__wrap">
 
 app.insertAdjacentHTML(`beforeEnd`, html);
 
-const arrowsWrap = document.querySelector(`.arrows__wrap`);
-const arrows = arrowsWrap.querySelectorAll(`.arrows__btn`);
+const arrows = document.querySelectorAll(`.arrows__wrap .arrows__btn`);
 
-arrows.forEach((it, i) => {
-  it[`data-id`] = `arrow-` + i;
-});
-
-arrowsWrap.addEventListener(`click`, (evt) => {
-  switch (evt.target[`data-id`]) {
-    case (`arrow-0`):
-      select(current - 1);
-      break;
-    case (`arrow-1`):
-      select(current + 1);
-      break;
-  }
-});
-
-
+arrows[0].addEventListener(`click`, () => select(current - 1));
+arrows[1].addEventListener(`click`, () => select(current + 1));
