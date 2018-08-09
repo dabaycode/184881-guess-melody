@@ -1,21 +1,28 @@
 'use strict';
 
-const RIGHT_ARROW = 39;
-const LEFT_ARROW = 37;
-
 const mainElement = document.querySelector(`.main`);
+
+const screenList = [
+  `welcome`,
+  `game-artist`,
+  `game-genre`,
+  `result-success`,
+  `fail-time`,
+  `fail-tries`
+];
+
+const screenItems = [];
+
+screenList.forEach((it) => {
+  screenItems.push(document.querySelector(`#${it}`));
+});
+
+const screens = screenItems.map((it) => it.content);
 
 const selectSlide = (element) => {
   mainElement.innerHTML = ``;
   mainElement.appendChild(element.cloneNode(true));
 };
-
-const screens = Array.from(document.querySelectorAll(`template`)).
-  map((it) => it.content);
-
-const genreScreen = screens[1];
-screens[1] = screens[2];
-screens[2] = genreScreen;
 
 let current = 0;
 const select = (index) => {
@@ -25,12 +32,14 @@ const select = (index) => {
   selectSlide(screens[current]);
 };
 
+select(0);
+
 document.addEventListener(`keydown`, (evt) => {
-  switch (evt.keyCode) {
-    case RIGHT_ARROW:
+  switch (evt.key) {
+    case `ArrowRight`:
       select(current + 1);
       break;
-    case LEFT_ARROW:
+    case `ArrowLeft`:
       select(current - 1);
       break;
   }
@@ -47,7 +56,8 @@ const html = `<div class="arrows__wrap">
   }
   .arrows__btn {
     background: none;
-    border: 2px solid black;
+    border: 2px solid white;
+    color: white;
     padding: 5px 20px;
   }
 </style>
@@ -60,19 +70,19 @@ app.insertAdjacentHTML(`beforeEnd`, html);
 const arrowsWrap = document.querySelector(`.arrows__wrap`);
 const arrows = arrowsWrap.querySelectorAll(`.arrows__btn`);
 
-arrows.forEach((it) => {
-  it.style = `color: white; border-color: white;`;
+arrows.forEach((it, i) => {
+  it[`data-id`] = `arrow-` + i;
 });
 
 arrowsWrap.addEventListener(`click`, (evt) => {
-  switch (evt.target.innerText) {
-    case (`<-`):
+  switch (evt.target[`data-id`]) {
+    case (`arrow-0`):
       select(current - 1);
       break;
-    case (`->`):
+    case (`arrow-1`):
       select(current + 1);
       break;
   }
 });
 
-select(0);
+
