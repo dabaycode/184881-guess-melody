@@ -89,7 +89,7 @@ submitBtn.disabled = `true`;
 const checkInputItems = moduleElement.querySelectorAll(`.game__input`);
 checkInputItems.forEach((it) => {
   it.addEventListener(`click`, () => {
-    if (Array.from(checkInputItems).some((it) => it.checked)) {
+    if (Array.from(checkInputItems).some((item) => item.checked)) {
       submitBtn.disabled = `false`;
       submitBtn.removeAttribute(`disabled`);
     } else {

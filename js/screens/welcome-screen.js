@@ -1,4 +1,4 @@
-import showScreen from './../show-screen.js'; s;
+import showScreen from './../show-screen.js';
 import genreScreen from './genre-screen.js';
 import {getElementFromTemplate} from '../utils.js';
 
