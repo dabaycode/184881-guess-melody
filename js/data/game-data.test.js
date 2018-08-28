@@ -1,10 +1,7 @@
 import {assert} from 'chai';
-import {getPoints} from './game-data.js';
-import {getResult} from './game-data.js';
-import {getLives} from './game-data.js';
+import {getPoints, getResult, getLives} from './game-data';
 
-
-const RESULTS = [1, 4, 13, 5, 4];
+const RESULTS = [1, 4, 13, 5];
 const SUCCESS_RESULT = {points: 10, lives: 3, time: 430};
 const FAIL_TIME_RESULT = {points: 10, lives: 3, time: 0};
 const FAIL_LIVES_RESULT = {points: 10, lives: 0, time: 13};
@@ -17,7 +14,7 @@ const getAnswers = (quantityRight, quantityRightFast, quantityAnswers) => {
     return false;
   }
 
-  let answers = [];
+  const answers = [];
 
   for (let i = 0; i < quantityRightFast; i++) {
     answers.push({isRight: true, time: getRandomInt(0, 30)});
@@ -46,16 +43,24 @@ describe(`Game statistic`, () => {
       assert.equal(getPoints(getAnswers(10, 0, 10), 3), 10);
     });
 
-    it(`Should return 5 if 5 answers are correct and time > 30 and and 3 lives left`, () => {
-      assert.equal(getPoints(getAnswers(5, 0, 10), 3), 5);
+    it(`Should return 4 if 8 answers are correct and time > 30 and 1 live left`, () => {
+      assert.equal(getPoints(getAnswers(8, 0, 10), 1), 4);
     });
 
-    it(`Should return 3 if 5 answers are correct and time > 30 and and 1 live left`, () => {
-      assert.equal(getPoints(getAnswers(3, 0, 10), 1), 3);
+    it(`Should return 5 if 8 answers are correct and 1 time < 30 and 1 live left`, () => {
+      assert.equal(getPoints(getAnswers(8, 1, 10), 1), 5);
     });
 
-    it(`Should return 0 if 5 answers are correct and time > 30 and and 0 lives left`, () => {
+    it(`Should return 8 if 9 answers are correct and 1 time < 30 and 2 lives left`, () => {
+      assert.equal(getPoints(getAnswers(9, 1, 10), 2), 8);
+    });
+
+    it(`Should return 0 if 5 answers are incorrect and time > 30 and and 0 lives left`, () => {
       assert.equal(getPoints(getAnswers(5, 0, 10), 0), 0);
+    });
+
+    it(`Should return 0 if 1 answer is correct and time > 30 and 0 live left`, () => {
+      assert.equal(getPoints(getAnswers(1, 0, 10), 1), 0);
     });
 
     it(`Should return 11 if all answers are correct and one time < 30 and 3 lives left`, () => {
@@ -66,13 +71,7 @@ describe(`Game statistic`, () => {
       assert.equal(getPoints(getAnswers(10, 3, 10), 3), 13);
     });
 
-    it(`Should return 1 if 1 answer is correct and time > 30 and min 1 live left`, () => {
-      assert.equal(getPoints(getAnswers(1, 0, 10), 1), 1);
-    });
 
-    it(`Should return 2 if 1 answer is correct and time < 30 and min 1 live left`, () => {
-      assert.equal(getPoints(getAnswers(1, 1, 10), 1), 2);
-    });
   });
 
   describe(`Get lives`, () => {

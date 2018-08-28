@@ -1,6 +1,6 @@
-import {getElementFromTemplate} from '../utils.js';
-import showScreen from '../show-screen.js';
-import welcomeScreen from './welcome-screen.js';
+import {getElementFromTemplate} from '../utils';
+import showScreen from '../show-screen';
+import welcomeScreen from './welcome-screen';
 
 const moduleElement = getElementFromTemplate(`<section class="result">
 <div class="result__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>

@@ -1,7 +1,7 @@
-import {getElementFromTemplate} from '../utils.js';
-import artistScreen from './../screens/artist-screen.js';
-import showScreen from '../show-screen.js';
-import welcomeScreen from './welcome-screen.js';
+import {getElementFromTemplate} from '../utils';
+import artistScreen from './../screens/artist-screen';
+import showScreen from '../show-screen';
+import welcomeScreen from './welcome-screen';
 
 const moduleElement = getElementFromTemplate(`<section class="game game--genre">
 <header class="game__header">

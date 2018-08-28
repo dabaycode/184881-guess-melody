@@ -1,5 +1,5 @@
-import showScreen from './show-screen.js';
-import welcomeScreen from './screens/welcome-screen.js';
+import showScreen from './show-screen';
+import welcomeScreen from './screens/welcome-screen';
 
 showScreen(welcomeScreen);
 

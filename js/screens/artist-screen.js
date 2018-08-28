@@ -1,9 +1,9 @@
-import {getElementFromTemplate, getRandomElement} from '../utils.js';
-import showScreen from '../show-screen.js';
-import successScreen from './success-screen.js';
-import failTimeScreen from './fail-time-screen.js';
-import failTriesScreen from './fail-tries-screen.js';
-import welcomeScreen from './welcome-screen.js';
+import {getElementFromTemplate, getRandomElement} from '../utils';
+import showScreen from '../show-screen';
+import successScreen from './success-screen';
+import failTimeScreen from './fail-time-screen';
+import failTriesScreen from './fail-tries-screen';
+import welcomeScreen from './welcome-screen';
 
 const moduleElement = getElementFromTemplate(`<section class="game game--artist">
 <header class="game__header">

@@ -1,8 +1,18 @@
+const INIT_PARAMS = Object.freeze({
+  POINTS: 0,
+  LIVES: 3,
+  FAST_TIME: 30,
+  POINT_RIGHT: 1,
+  POINT_FALSE: 2,
+  ANSWERS_QUANTITY: 10
+});
+
+
 const getPoints = (answers, lives) => {
 
-  let points = 0;
+  let points = INIT_PARAMS.POINTS;
 
-  if (answers.length < 10) {
+  if (answers.length < INIT_PARAMS.ANSWERS_QUANTITY) {
     return -1;
   }
 
@@ -13,13 +23,18 @@ const getPoints = (answers, lives) => {
   answers.forEach((it) => {
 
     if (it.isRight) {
-      points++;
-      if (it.time <= 30) {
-        points++;
+      points += INIT_PARAMS.POINT_RIGHT;
+      if (it.time <= INIT_PARAMS.FAST_TIME) {
+        points += INIT_PARAMS.POINT_RIGHT;
       }
+    } else {
+      points -= INIT_PARAMS.POINT_FALSE;
     }
-
   });
+
+  if (points < 0) {
+    points = 0;
+  }
 
   return points;
 };
@@ -52,7 +67,7 @@ const getResult = (totalResults, gamerResult) => {
 
 const getLives = (answers) => {
 
-  let lives = 3;
+  let lives = INIT_PARAMS.LIVES;
 
   answers.forEach((it) => {
     if (!it.isRight) {
