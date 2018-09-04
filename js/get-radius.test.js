@@ -21,10 +21,5 @@ describe(`Function should correctly calculate circle length`, () => {
       assert.equal(getRadius(0.5, 370).stroke, circleLengthPart(2));
       assert.equal(getRadius(0.5, 370).offset, circleLengthPart(2));
     });
-
-    it(`Offset and length should be equal on a half`, () => {
-      assert.equal(getRadius((1 / 3), 370).stroke, circleLengthPart(3));
-      assert.equal(getRadius((2 / 3), 370).offset, circleLengthPart(1.5));
-    });
   });
 });
