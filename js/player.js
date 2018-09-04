@@ -19,7 +19,7 @@ const pauseHandler = (evt) => {
 const playHandler = (evt) => {
 
   const btn = evt.target;
-  const form = document.querySelector(`.game__tracks`);
+  const form = btn.closest(`.game__tracks`);
 
   if (form) {
     const trackItems = form.querySelectorAll(`audio`);

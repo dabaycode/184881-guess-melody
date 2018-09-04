@@ -17,20 +17,21 @@ const changeLevel = (state) => {
     showScreen(successScreen(tempState));
   } else {
 
+    const nextLevel = levels[tempState.level];
+
     tempState.level++;
 
-    switch (levels[tempState.level - 1].type) {
+    switch (nextLevel.type) {
       case `genre`: {
-        showScreen(genreScreen(tempState, levels[tempState.level - 1]));
+        showScreen(genreScreen(tempState, nextLevel));
         break;
       }
       case `artist`: {
-        showScreen(artistScreen(tempState, levels[tempState.level - 1]));
+        showScreen(artistScreen(tempState, nextLevel));
         break;
       }
     }
   }
-
 
 };
 
