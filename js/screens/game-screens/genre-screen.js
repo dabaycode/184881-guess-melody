@@ -2,32 +2,21 @@ import {getElementFromTemplate} from '../../utils';
 import showScreen from '../../show-screen';
 import welcomeScreen from '../welcome-screen';
 import header from './header';
-import {playMusic} from '../../player';
-import {gameStat} from '../../data/game-data';
+import {playHandler} from '../../player';
+import {gameStat, initState} from '../../data/game-data';
 import {changeLevel} from '../../level-change';
 
 const getTracks = (level) => {
-
-  const answers = [];
-  let id = 1;
-  for (let it of level.question.answers) {
-    answers.push(`
-    <div class="track">
+  return level.question.answers.map((it, i) => `<div class="track">
     <button class="track__button track__button--play" type="button"></button>
     <div class="track__status">
       <audio src="${it.src}"></audio>
     </div>
     <div class="game__answer">
-      <input class="game__input visually-hidden" type="checkbox" name="answer" value="${it.genre}" id="answer-${id}}">
-      <label class="game__check" for="answer-${id}}">Отметить</label>
+      <input class="game__input visually-hidden" type="checkbox" name="answer" value="${it.genre}" id="answer-${i}}">
+      <label class="game__check" for="answer-${i}}">Отметить</label>
     </div>
-  </div>
-    `);
-    id++;
-  }
-
-  return answers;
-
+  </div>`);
 };
 
 const genreScreenTemplate = (state, level) => {
@@ -48,7 +37,7 @@ const genreScreenTemplate = (state, level) => {
 </section>`);
 
   const backBtn = elem.querySelector(`.game__back`);
-  backBtn.addEventListener(`click`, () => showScreen(welcomeScreen));
+  backBtn.addEventListener(`click`, () => showScreen(welcomeScreen(initState)));
 
   const submitBtn = elem.querySelector(`.game__submit`);
   submitBtn.disabled = `true`;
@@ -67,17 +56,9 @@ const genreScreenTemplate = (state, level) => {
 
   const tracks = elem.querySelectorAll(`.track`);
 
-  const play = (btn, audio) => {
-    playMusic(btn, audio);
-
-    btn.removeEventListener(`click`, play);
-  };
-
   for (let it of tracks) {
     let btn = it.querySelector(`.track__button`);
-    let audio = it.querySelector(`.track__status audio`);
-
-    btn.addEventListener(`click`, () => play(btn, audio));
+    btn.addEventListener(`click`, playHandler);
   }
 
   const getKeys = (currentLevel) => {
@@ -90,7 +71,6 @@ const genreScreenTemplate = (state, level) => {
     return keys;
   };
 
-
   const getAnswers = (checks) => {
     const userAnswers = [];
 
@@ -102,10 +82,7 @@ const genreScreenTemplate = (state, level) => {
   };
 
   const isAnswersCorrect = (keys, answers) => {
-    if (answers.toString() === keys.toString()) {
-      return true;
-    }
-    return false;
+    return (answers.toString() === keys.toString());
   };
 
   submitBtn.addEventListener(`click`, (evt) => {
@@ -113,11 +90,7 @@ const genreScreenTemplate = (state, level) => {
 
     const checkItems = elem.querySelectorAll(`.game__input`);
 
-    if (isAnswersCorrect(getKeys(level), getAnswers(checkItems))) {
-      gameStat.addAnswer = {isRight: true, time: 30};
-    } else {
-      gameStat.addAnswer = {isRight: false, time: 30};
-    }
+    gameStat.addAnswer = {isRight: isAnswersCorrect(getKeys(level), getAnswers(checkItems)), time: 30};
 
     changeLevel(state);
   });

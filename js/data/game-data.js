@@ -38,7 +38,7 @@ const questions = {
   'genre': [
     {
       title: `Выберите рок треки`,
-      answers: new Set([
+      answers: [
         {
           src: `https://www.youtube.com/audiolibrary_download?vid=91624fdc22fc54ed`,
           genre: `Jazz`,
@@ -59,11 +59,11 @@ const questions = {
           genre: `R&B`,
           isRight: false,
         }
-      ]),
+      ],
     },
     {
       title: `Выберете треки в жанре джаз`,
-      answers: new Set([
+      answers: [
         {
           src: `https://www.youtube.com/audiolibrary_download?vid=91624fdc22fc54ed`,
           genre: `Jazz`,
@@ -84,14 +84,14 @@ const questions = {
           genre: `Jazz`,
           isRight: true,
         },
-      ]),
+      ],
     }
   ],
   'artist': [
     {
       title: `Кто исполняет эту песню?`,
       src: `https://www.youtube.com/audiolibrary_download?vid=bcbe5be936a32fb1`,
-      answers: new Set([
+      answers: [
         {
           artist: `Jingle Punks`,
           image: `https://i.vimeocdn.com/portrait/992615_300x300`,
@@ -107,12 +107,12 @@ const questions = {
           image: `https://i.ytimg.com/vi/jzgM3m8Vp1k/maxresdefault.jpg`,
           isRight: false,
         },
-      ]),
+      ],
     },
     {
       title: `Кто исполняет эту песню?`,
       src: `https://www.youtube.com/audiolibrary_download?vid=79100e44c826e2f7`,
-      answers: new Set([
+      answers: [
         {
           artist: `Riot`,
           image: `https://i.ytimg.com/vi/jzgM3m8Vp1k/maxresdefault.jpg`,
@@ -128,7 +128,7 @@ const questions = {
           image: `http://www.atribuna.com.br/fileadmin/_processed_/csm_Quincas-Moreira-Foto-Divulgacao_76d1a8b00e.jpg`,
           isRight: true,
         }
-      ]),
+      ],
     }
   ],
 };

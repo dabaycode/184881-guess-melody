@@ -19,7 +19,7 @@ const successScreenTemplate = (state) => {
 
   const replayBtn = elem.querySelector(`.result__replay`);
 
-  replayBtn.addEventListener(`click`, () => showScreen(welcomeScreen));
+  replayBtn.addEventListener(`click`, () => showScreen(welcomeScreen()));
 
   return elem;
 };

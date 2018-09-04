@@ -2,29 +2,18 @@ import {getElementFromTemplate} from '../../utils';
 import showScreen from '../../show-screen';
 import welcomeScreen from '../welcome-screen';
 import header from './header';
-import {playMusic} from '../../player';
-import {gameStat} from '../../data/game-data';
+import {playHandler} from '../../player';
+import {gameStat, initState} from '../../data/game-data';
 import {changeLevel} from '../../level-change';
 
 const getArtists = (level) => {
-
-  const answers = [];
-  let id = 1;
-  for (let it of level.question.answers) {
-    answers.push(`
-    <div class="artist">
-      <input class="artist__input visually-hidden" type="radio" name="answer" value="${it.artist}" id="answer-${id}">
-      <label class="artist__name" for="answer-${id}">
-        <img class="artist__picture" src="${it.image}" alt="${it.artist}">
-        ${it.artist}
-      </label>
-    </div>
-    `);
-    id++;
-  }
-
-  return answers;
-
+  return level.question.answers.map((it, i) => `<div class="artist">
+  <input class="artist__input visually-hidden" type="radio" name="answer" value="${it.artist}" id="answer-${i}">
+  <label class="artist__name" for="answer-${i}">
+    <img class="artist__picture" src="${it.image}" alt="${it.artist}">
+    ${it.artist}
+  </label>
+</div>`);
 };
 
 const artistScreenTemplate = (state, level) => {
@@ -49,21 +38,14 @@ const artistScreenTemplate = (state, level) => {
   </section>`);
 
 
-  const play = (btn, audio) => {
-    playMusic(btn, audio);
-
-    btn.removeEventListener(`click`, play);
-  };
-
   const track = elem.querySelector(`.game__track`);
 
   const btn = track.querySelector(`.track__button`);
-  const audio = track.querySelector(`audio`);
 
-  btn.addEventListener(`click`, () => play(btn, audio));
+  btn.addEventListener(`click`, playHandler);
 
   const backBtn = elem.querySelector(`.game__back`);
-  backBtn.addEventListener(`click`, () => showScreen(welcomeScreen));
+  backBtn.addEventListener(`click`, () => showScreen(welcomeScreen(initState)));
 
   const getKey = () => {
 

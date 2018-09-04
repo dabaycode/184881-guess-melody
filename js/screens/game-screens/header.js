@@ -24,9 +24,9 @@ const headerTemplate = (state) => `<header class="game__header">
 </div>
 
 <div class="game__mistakes">
-${new Array(state.lives)
-  .fill(`<div class="wrong"></div>`)
-  .join(``)}
+
+${(`<div class="wrong"></div>`).repeat(state.lives)}
+
 </div>
 </header>`;
 

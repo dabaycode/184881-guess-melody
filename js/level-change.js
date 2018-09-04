@@ -12,7 +12,7 @@ const changeLevel = (state) => {
   tempState.lives = getLives(gameStat.answers);
 
   if (tempState.lives === 0) {
-    showScreen(failTriesScreen);
+    showScreen(failTriesScreen());
   } else if (tempState.level === 10) {
     showScreen(successScreen(tempState));
   } else {
