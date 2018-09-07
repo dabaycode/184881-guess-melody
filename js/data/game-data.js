@@ -14,6 +14,13 @@ const initState = Object.freeze({
   level: 0,
 });
 
+const CIRCLE = Object.freeze({
+  radius: 370,
+  get length() {
+    return Math.ceil(2 * Math.PI * this.radius);
+  },
+});
+
 const gameStat = {
   _answers: [],
   _points: INIT_PARAMS.POINTS,
@@ -241,4 +248,4 @@ const game = {
   }
 };
 
-export {getPoints, getResult, getLives, initState, game, gameStat, getGameLevels};
+export {getPoints, getResult, getLives, initState, game, gameStat, getGameLevels, CIRCLE};

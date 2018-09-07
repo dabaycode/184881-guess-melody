@@ -1,101 +1,38 @@
-import {getElementFromTemplate} from '../../utils';
+import HeaderView from '../../views/header-view';
+import GenreView from '../../views/genre-view';
+import {gameStat} from '../../data/game-data';
+import {changeLevel} from '../../level-change';
 import showScreen from '../../show-screen';
 import welcomeScreen from '../welcome-screen';
-import header from './header';
-import {playHandler} from '../../player';
-import {gameStat, initState} from '../../data/game-data';
-import {changeLevel} from '../../level-change';
 
-const getTracks = (level) => {
-  return level.question.answers.map((it, i) => `<div class="track">
-    <button class="track__button track__button--play" type="button"></button>
-    <div class="track__status">
-      <audio src="${it.src}"></audio>
-    </div>
-    <div class="game__answer">
-      <input class="game__input visually-hidden" type="checkbox" name="answer" value="${it.genre}" id="answer-${i}}">
-      <label class="game__check" for="answer-${i}}">Отметить</label>
-    </div>
-  </div>`);
-};
+const genreScreen = (state, level) => {
+  const screen = new GenreView(state, level);
 
-const genreScreenTemplate = (state, level) => {
-  const elem = getElementFromTemplate(`
-  <section class="game game--genre">
-  ${header(state)}
-  <section class="game__screen">
+  const header = new HeaderView(state);
 
-  <h2 class="game__title">${level.question.title}</h2>
-
-  <form class="game__tracks">
-  
-  ${getTracks(level).join(``)}
-
-    <button class="game__submit button" type="submit">Ответить</button>
-  </form>
-</section>
-</section>`);
-
-  const backBtn = elem.querySelector(`.game__back`);
-  backBtn.addEventListener(`click`, () => showScreen(welcomeScreen(initState)));
-
-  const submitBtn = elem.querySelector(`.game__submit`);
-  submitBtn.disabled = `true`;
-
-  const checkInputItems = elem.querySelectorAll(`.game__input`);
-  checkInputItems.forEach((it) => {
-    it.addEventListener(`click`, () => {
-      if (Array.from(checkInputItems).some((item) => item.checked)) {
-        submitBtn.disabled = `false`;
-        submitBtn.removeAttribute(`disabled`);
-      } else {
-        submitBtn.disabled = `true`;
-      }
-    });
-  });
-
-  const tracks = elem.querySelectorAll(`.track`);
-
-  for (let it of tracks) {
-    let btn = it.querySelector(`.track__button`);
-    btn.addEventListener(`click`, playHandler);
-  }
-
-  const getKeys = (currentLevel) => {
-    const keys = [];
-
-    for (let it of currentLevel.question.answers) {
-      keys.push(it.isRight);
-    }
-
-    return keys;
+  header.backBtnHandler = () => {
+    showScreen(welcomeScreen());
   };
 
-  const getAnswers = (checks) => {
-    const userAnswers = [];
+  screen.element.insertBefore(header.element, screen.element.querySelector(`.game__screen`));
 
-    for (let it of checks) {
-      userAnswers.push(it.checked);
-    }
+  const getKeys = (currentLevel) => currentLevel.question.answers.map((it) => it.isRight);
 
-    return userAnswers;
-  };
+  const getAnswers = (checks) => Array.from(checks).map((it) => it.checked);
 
   const isAnswersCorrect = (keys, answers) => {
     return (answers.toString() === keys.toString());
   };
 
-  submitBtn.addEventListener(`click`, (evt) => {
+  screen.submitBtnHandler = (evt, checkItems) => {
     evt.preventDefault();
-
-    const checkItems = elem.querySelectorAll(`.game__input`);
 
     gameStat.addAnswer = {isRight: isAnswersCorrect(getKeys(level), getAnswers(checkItems)), time: 30};
 
     changeLevel(state);
-  });
+  };
 
-  return elem;
+  return screen.element;
 };
 
-export default genreScreenTemplate;
+export default genreScreen;

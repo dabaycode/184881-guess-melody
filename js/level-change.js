@@ -2,7 +2,7 @@ import showScreen from './show-screen';
 import genreScreen from './screens/game-screens/genre-screen';
 import artistScreen from './screens/game-screens/artist-screen';
 import {getLives, gameStat, game} from './data/game-data';
-import failTriesScreen from './screens/result-screens/fail-tries-screen';
+import failScreen from './screens/result-screens/fail-screen';
 import successScreen from './screens/result-screens/success-screen';
 
 const changeLevel = (state) => {
@@ -11,12 +11,11 @@ const changeLevel = (state) => {
 
   tempState.lives = getLives(gameStat.answers);
 
-  if (tempState.lives === 0) {
-    showScreen(failTriesScreen());
+  if (tempState.lives === 0 || tempState.time === 0) {
+    showScreen(failScreen(tempState));
   } else if (tempState.level === 10) {
     showScreen(successScreen(tempState));
   } else {
-
     const nextLevel = levels[tempState.level];
 
     tempState.level++;

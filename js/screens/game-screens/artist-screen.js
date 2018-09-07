@@ -1,51 +1,21 @@
-import {getElementFromTemplate} from '../../utils';
+import {gameStat} from '../../data/game-data';
+import {changeLevel} from '../../level-change';
+import ArtistView from '../../views/artist-view';
+import HeaderView from '../../views/header-view';
 import showScreen from '../../show-screen';
 import welcomeScreen from '../welcome-screen';
-import header from './header';
-import {playHandler} from '../../player';
-import {gameStat, initState} from '../../data/game-data';
-import {changeLevel} from '../../level-change';
 
-const getArtists = (level) => {
-  return level.question.answers.map((it, i) => `<div class="artist">
-  <input class="artist__input visually-hidden" type="radio" name="answer" value="${it.artist}" id="answer-${i}">
-  <label class="artist__name" for="answer-${i}">
-    <img class="artist__picture" src="${it.image}" alt="${it.artist}">
-    ${it.artist}
-  </label>
-</div>`);
-};
+const artistScreen = (state, level) => {
 
-const artistScreenTemplate = (state, level) => {
-  const elem = getElementFromTemplate(`
-  <section class="game game--artist">
-  ${header(state)}
-  <section class="game__screen">
+  const screen = new ArtistView(state, level);
 
-  <h2 class="game__title">${level.question.title}</h2>
+  const header = new HeaderView(state);
 
-  <div class="game__track">
-    <button class="track__button track__button--play" type="button"></button>
-    <audio src="${level.question.src}"></audio>
-  </div>
+  header.backBtnHandler = () => {
+    showScreen(welcomeScreen());
+  };
 
-  <form class="game__artist">
-
-  ${getArtists(level).join(``)}
-
-  </form>
-  </section>
-  </section>`);
-
-
-  const track = elem.querySelector(`.game__track`);
-
-  const btn = track.querySelector(`.track__button`);
-
-  btn.addEventListener(`click`, playHandler);
-
-  const backBtn = elem.querySelector(`.game__back`);
-  backBtn.addEventListener(`click`, () => showScreen(welcomeScreen(initState)));
+  screen.element.insertBefore(header.element, screen.element.querySelector(`.game__screen`));
 
   const getKey = () => {
 
@@ -58,26 +28,15 @@ const artistScreenTemplate = (state, level) => {
     return false;
   };
 
-  const inputItems = elem.querySelectorAll(`.artist__input`);
+  screen.changeInputHandler = (evt) => {
+    const answer = evt.target.value;
 
-  inputItems.forEach((it) => {
-    it.addEventListener(`change`, (evt) => {
-      const answer = evt.target.value;
+    gameStat.addAnswer = {isRight: (answer === getKey()), time: 30};
 
-      if (answer === getKey()) {
-        gameStat.addAnswer = {isRight: true, time: 30};
-      } else {
-        gameStat.addAnswer = {isRight: false, time: 30};
-      }
+    changeLevel(state);
+  };
 
-      changeLevel(state);
-    });
-
-  });
-
-
-  return elem;
-
+  return screen.element;
 };
 
-export default artistScreenTemplate;
+export default artistScreen;

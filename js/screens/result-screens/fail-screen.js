@@ -1,10 +1,10 @@
 import showScreen from '../../show-screen';
 import welcomeScreen from '../welcome-screen';
-import SuccessView from '../../views/success-view';
+import FailView from '../../views/fail-view';
 
 
-const successScreen = (state) => {
-  const screen = new SuccessView(state);
+const failScreen = (state) => {
+  const screen = new FailView(state);
 
   screen.replayBtnHandler = () => {
     showScreen(welcomeScreen());
@@ -13,4 +13,4 @@ const successScreen = (state) => {
   return screen.element;
 };
 
-export default successScreen;
+export default failScreen;
