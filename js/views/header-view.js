@@ -1,5 +1,5 @@
 import AbstractView from '../views/abstract-view';
-import {CIRCLE} from '../data/game-data';
+import {CIRCLE, initState} from '../data/game-data';
 import {getRadius} from '../get-radius';
 import {getSec} from '../utils';
 
@@ -19,7 +19,7 @@ export default class HeaderView extends AbstractView {
     
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
       <circle class="timer__line" cx="390" cy="390" r="370"
-              style="filter: url(.#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center; stroke-dasharray: ${CIRCLE.length};stroke-dashoffset: ${getRadius(0.7, CIRCLE.radius).offset};"/>
+              style="filter: url(#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center; stroke-dasharray: ${CIRCLE.length};stroke-dashoffset: ${getRadius(this.state.time / initState.time, CIRCLE.radius).offset};"/>
     </svg>
     
     <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
@@ -36,13 +36,13 @@ export default class HeaderView extends AbstractView {
     </header>`;
   }
 
-  backBtnHandler() {}
+  // backBtnHandler() {}
 
-  bind() {
-    this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
-      this.backBtnHandler();
-    });
-  }
+  // bind() {
+  //   this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
+  //     this.backBtnHandler();
+  //   });
+  // }
 }
 
 

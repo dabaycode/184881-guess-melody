@@ -1,5 +1,6 @@
 import AbstractView from '../views/abstract-view';
 import {playHandler} from '../player';
+import HeaderView from '../views/header-view';
 
 export default class GenreView extends AbstractView {
   constructor(state, level) {
@@ -12,7 +13,7 @@ export default class GenreView extends AbstractView {
 
     return `
     <section class="game game--genre">
-
+    ${new HeaderView(this.state).template}
     <section class="game__screen">
   
     <h2 class="game__title">${this.level.question.title}</h2>
@@ -38,17 +39,20 @@ export default class GenreView extends AbstractView {
 
   submitBtnHandler() {}
 
-  bind() {
+  backBtnHandler() {}
 
+  bind() {
+    const checkInputItems = Array.from(this.element.querySelectorAll(`.game__input`));
     const submitBtn = this.element.querySelector(`.game__submit`);
-    const checkInputItems = this.element.querySelectorAll(`.game__input`);
 
     submitBtn.disabled = `true`;
-
     submitBtn.addEventListener(`click`, (evt) => {
-      this.submitBtnHandler(evt, checkInputItems);
-    }
-    );
+
+      evt.preventDefault();
+      const checkedAnswer = checkInputItems.filter((it) => it.checked).map((element) => element.value);
+      this.submitBtnHandler(checkedAnswer);
+
+    });
 
     checkInputItems.forEach((it) => {
       it.addEventListener(`click`, () => {
@@ -67,5 +71,9 @@ export default class GenreView extends AbstractView {
       let btn = it.querySelector(`.track__button`);
       btn.addEventListener(`click`, playHandler);
     }
+
+    this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
+      this.backBtnHandler();
+    });
   }
 }

@@ -1,12 +1,12 @@
 import AbstractView from './abstract-view';
-import {gameStat, getResult} from '../data/game-data';
+import {getResult} from '../data/game-data';
 
 export default class FailView extends AbstractView {
   constructor(state) {
     super();
     this.state = state;
     this.userResult = {
-      points: gameStat.points,
+      points: state.points,
       lives: state.lives,
       time: state.time,
     };

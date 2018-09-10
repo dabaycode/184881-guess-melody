@@ -1,5 +1,6 @@
 import AbstractView from '../views/abstract-view';
 import {playHandler} from '../player';
+import HeaderView from '../views/header-view';
 
 export default class ArtistView extends AbstractView {
   constructor(state, level) {
@@ -12,6 +13,7 @@ export default class ArtistView extends AbstractView {
 
     return `
     <section class="game game--artist">
+    ${new HeaderView(this.state).template}
     <section class="game__screen">
   
     <h2 class="game__title">${this.level.question.title}</h2>
@@ -36,7 +38,9 @@ export default class ArtistView extends AbstractView {
     </section>`;
   }
 
-  changeInputHandler() {}
+  submitBtnHandler() {}
+
+  backBtnHandler() {}
 
   bind() {
     const track = this.element.querySelector(`.game__track`);
@@ -46,10 +50,16 @@ export default class ArtistView extends AbstractView {
 
     inputItems.forEach((it) => {
       it.addEventListener(`change`, (evt) => {
-        this.changeInputHandler(evt);
+        const answer = [evt.target.value];
+
+        this.submitBtnHandler(answer);
       });
     });
 
     btn.addEventListener(`click`, playHandler);
+
+    this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
+      this.backBtnHandler();
+    });
   }
 }

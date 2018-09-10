@@ -1,21 +1,23 @@
-import {game, getGameLevels, gameStat} from '../data/game-data';
-import {changeLevel} from '../level-change';
-import {initState} from '../data/game-data';
 import WelcomeView from '../views/welcome-view';
+import Application from '../application';
 
-export default () => {
-  const screen = new WelcomeView();
+export default class WelcomeScreen {
+  constructor(model) {
+    this.model = model;
+    this.screen = new WelcomeView();
+    this.bind();
+  }
 
-  screen.playBtnHandler = () => {
-    const state = Object.assign({}, initState);
+  get element() {
 
-    gameStat.clear();
-    game.addLevels = getGameLevels();
+    return this.screen.element;
+  }
 
-    changeLevel(state);
-  };
-
-  return screen.element;
-};
+  bind() {
+    this.screen.playBtnHandler = () => {
+      Application.showGame();
+    };
+  }
+}
 
 

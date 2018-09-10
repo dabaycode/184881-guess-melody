@@ -12,6 +12,7 @@ const initState = Object.freeze({
   time: INIT_PARAMS.TIME,
   lives: INIT_PARAMS.LIVES,
   level: 0,
+  points: 0,
 });
 
 const CIRCLE = Object.freeze({
@@ -21,25 +22,29 @@ const CIRCLE = Object.freeze({
   },
 });
 
-const gameStat = {
-  _answers: [],
-  _points: INIT_PARAMS.POINTS,
-  set addAnswer(answer) {
-    this._answers.push(answer);
-    this._points = getPoints(this.answers, getLives(this.answers));
-  },
-  get points() {
-    return this._points;
-  },
-  get answers() {
-    return this._answers;
-  },
-  clear() {
-    this._answers = [];
-    this._points = INIT_PARAMS.POINTS;
-  },
+const getRandomLevel = (type) => {
+  const arr = questions[type].slice();
+
+  return {
+    type,
+    question: arr[Math.floor(Math.random() * arr.length)],
+  };
 };
 
+const getGameLevels = () => {
+  const arr = [];
+
+  let i = 0;
+
+  while (i < (INIT_PARAMS.LEVELS_QUANTITY / 2)) {
+    arr.push(getRandomLevel(`genre`));
+    arr.push(getRandomLevel(`artist`));
+
+    i++;
+  }
+
+  return arr;
+};
 
 const questions = {
   'genre': [
@@ -140,30 +145,6 @@ const questions = {
   ],
 };
 
-const getRandomLevel = (type) => {
-  const arr = questions[type].slice();
-
-  return {
-    type,
-    question: arr[Math.floor(Math.random() * arr.length)],
-  };
-};
-
-const getGameLevels = () => {
-  const arr = [];
-
-  let i = 0;
-
-  while (i < (INIT_PARAMS.LEVELS_QUANTITY / 2)) {
-    arr.push(getRandomLevel(`genre`));
-    arr.push(getRandomLevel(`artist`));
-
-    i++;
-  }
-
-  return arr;
-};
-
 
 const getPoints = (answers, lives) => {
 
@@ -239,13 +220,4 @@ const getLives = (answers) => {
   return lives;
 };
 
-const game = {
-  set addLevels(levelItems) {
-    this._levels = levelItems;
-  },
-  get levels() {
-    return this._levels;
-  }
-};
-
-export {getPoints, getResult, getLives, initState, game, gameStat, getGameLevels, CIRCLE};
+export {getPoints, getResult, getLives, initState, getGameLevels, CIRCLE, INIT_PARAMS};
