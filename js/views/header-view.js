@@ -1,4 +1,5 @@
 import AbstractView from '../views/abstract-view';
+import Application from '../application';
 import {CIRCLE, initState} from '../data/game-data';
 import {getRadius} from '../get-radius';
 import {getSec} from '../utils';
@@ -36,13 +37,11 @@ export default class HeaderView extends AbstractView {
     </header>`;
   }
 
-  // backBtnHandler() {}
-
-  // bind() {
-  //   this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
-  //     this.backBtnHandler();
-  //   });
-  // }
+  bind() {
+    this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
+      Application.showWelcome();
+    });
+  }
 }
 
 

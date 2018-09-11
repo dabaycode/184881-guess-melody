@@ -31,11 +31,6 @@ class GameScreen {
 
   updateHeader() {
     const headerElem = new HeaderView(this.model.state).element;
-
-    // headerElem.backBtnHandler = () => {
-    //   Application.showWelcome();
-    // };
-
     this.screen.element.replaceChild(headerElem, this.screen.element.firstElementChild);
   }
 
@@ -68,10 +63,6 @@ class GameScreen {
         this.goToNextLevel();
       }
       this.updateHeader();
-    };
-
-    this.screen.backBtnHandler = () => {
-      Application.showWelcome();
     };
 
   }

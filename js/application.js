@@ -17,7 +17,7 @@ export default class Application {
 
   static showResult(screen) {
     screen.replayBtnHandler = () => {
-      this.showWelcome();
+      this.showGame();
     };
 
     showScreen(screen.element);
