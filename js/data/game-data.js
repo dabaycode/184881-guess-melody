@@ -22,129 +22,29 @@ const CIRCLE = Object.freeze({
   },
 });
 
-const getRandomLevel = (type) => {
-  const arr = questions[type].slice();
+const getRandomLevel = (levels, type) => {
+  const array = levels[type].slice();
 
   return {
     type,
-    question: arr[Math.floor(Math.random() * arr.length)],
+    question: array[Math.floor(Math.random() * array.length)],
   };
 };
 
-const getGameLevels = () => {
-  const arr = [];
+const getGameLevels = (levels) => {
+  const array = [];
 
   let i = 0;
 
   while (i < (INIT_PARAMS.LEVELS_QUANTITY / 2)) {
-    arr.push(getRandomLevel(`genre`));
-    arr.push(getRandomLevel(`artist`));
+    array.push(getRandomLevel(levels, `genre`));
+    array.push(getRandomLevel(levels, `artist`));
 
     i++;
   }
 
-  return arr;
+  return array;
 };
-
-const questions = {
-  'genre': [
-    {
-      title: `Выберите рок треки`,
-      answers: [
-        {
-          src: `https://www.youtube.com/audiolibrary_download?vid=91624fdc22fc54ed`,
-          genre: `Jazz`,
-          isRight: false,
-        },
-        {
-          src: `https://www.youtube.com/audiolibrary_download?vid=dc3b4dc549becd6b`,
-          genre: `Rock`,
-          isRight: true,
-        },
-        {
-          src: `https://www.youtube.com/audiolibrary_download?vid=a127d9b7de8a17cf`,
-          genre: `Country`,
-          isRight: false,
-        },
-        {
-          src: `https://www.youtube.com/audiolibrary_download?vid=dfb828f40096184c`,
-          genre: `R&B`,
-          isRight: false,
-        }
-      ],
-    },
-    {
-      title: `Выберете треки в жанре джаз`,
-      answers: [
-        {
-          src: `https://www.youtube.com/audiolibrary_download?vid=91624fdc22fc54ed`,
-          genre: `Jazz`,
-          isRight: true,
-        },
-        {
-          src: `https://www.youtube.com/audiolibrary_download?vid=dc3b4dc549becd6b`,
-          genre: `Rock`,
-          isRight: false,
-        },
-        {
-          src: `https://www.youtube.com/audiolibrary_download?vid=a127d9b7de8a17cf`,
-          genre: `Country`,
-          isRight: false,
-        },
-        {
-          src: `https://www.youtube.com/audiolibrary_download?vid=91624fdc22fc54ed`,
-          genre: `Jazz`,
-          isRight: true,
-        },
-      ],
-    }
-  ],
-  'artist': [
-    {
-      title: `Кто исполняет эту песню?`,
-      src: `https://www.youtube.com/audiolibrary_download?vid=bcbe5be936a32fb1`,
-      answers: [
-        {
-          artist: `Jingle Punks`,
-          image: `https://i.vimeocdn.com/portrait/992615_300x300`,
-          isRight: true,
-        },
-        {
-          artist: `Audionautix`,
-          image: `http://4.bp.blogspot.com/-kft9qu5ET6U/VPFUBi9W-MI/AAAAAAAACYM/UxXilXKYwOc/s1600/audionautix%2BHalf%2BSize.jpg`,
-          isRight: false,
-        },
-        {
-          artist: `Riot`,
-          image: `https://i.ytimg.com/vi/jzgM3m8Vp1k/maxresdefault.jpg`,
-          isRight: false,
-        },
-      ],
-    },
-    {
-      title: `Кто исполняет эту песню?`,
-      src: `https://www.youtube.com/audiolibrary_download?vid=79100e44c826e2f7`,
-      answers: [
-        {
-          artist: `Riot`,
-          image: `https://i.ytimg.com/vi/jzgM3m8Vp1k/maxresdefault.jpg`,
-          isRight: false,
-        },
-        {
-          artist: `Jingle Punks`,
-          image: `https://i.vimeocdn.com/portrait/992615_300x300`,
-          isRight: false,
-        },
-        {
-          artist: `Quincas Moreira`,
-          image: `http://www.atribuna.com.br/fileadmin/_processed_/csm_Quincas-Moreira-Foto-Divulgacao_76d1a8b00e.jpg`,
-          isRight: true,
-        }
-      ],
-    }
-  ],
-};
-
 
 const getPoints = (answers, lives) => {
 

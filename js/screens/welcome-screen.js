@@ -15,7 +15,7 @@ export default class WelcomeScreen {
 
   bind() {
     this.screen.playBtnHandler = () => {
-      Application.showGame();
+      Application.start();
     };
   }
 }

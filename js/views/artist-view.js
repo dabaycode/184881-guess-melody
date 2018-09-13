@@ -2,6 +2,9 @@ import AbstractView from '../views/abstract-view';
 import {playHandler} from '../player';
 import HeaderView from '../views/header-view';
 
+const DEBUG = new URLSearchParams(location.search).has(`debug`);
+const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box-sizing: border-box;"`;
+
 export default class ArtistView extends AbstractView {
   constructor(state, level) {
     super();
@@ -28,7 +31,7 @@ export default class ArtistView extends AbstractView {
     ${this.level.question.answers.map((it, i) => `<div class="artist">
     <input class="artist__input visually-hidden" type="radio" name="answer" value="${it.artist}" id="answer-${i}">
     <label class="artist__name" for="answer-${i}">
-      <img class="artist__picture" src="${it.image}" alt="${it.artist}">
+      <img class="artist__picture" src="${it.image}" alt="${it.artist}" ${DEBUG && it.isRight ? DEBUG_STYLE : ``}>
       ${it.artist}
     </label>
   </div>`).join(``)}

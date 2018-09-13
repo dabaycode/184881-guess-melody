@@ -2,6 +2,9 @@ import AbstractView from '../views/abstract-view';
 import {playHandler} from '../player';
 import HeaderView from '../views/header-view';
 
+const DEBUG = new URLSearchParams(location.search).has(`debug`);
+const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box-sizing: border-box;"`;
+
 export default class GenreView extends AbstractView {
   constructor(state, level) {
     super();
@@ -26,8 +29,8 @@ export default class GenreView extends AbstractView {
       <audio src="${it.src}"></audio>
     </div>
     <div class="game__answer">
-      <input class="game__input visually-hidden" type="checkbox" name="answer" value="${it.genre}" id="answer-${i}}">
-      <label class="game__check" for="answer-${i}}">Отметить</label>
+      <input class="game__input visually-hidden" type="checkbox" name="answer" value="${it.genre}" id="answer-${i}">
+      <label class="game__check" ${DEBUG && it.isRight ? DEBUG_STYLE : ``} for="answer-${i}">Отметить</label>
     </div>
   </div>`).join(``)}
   

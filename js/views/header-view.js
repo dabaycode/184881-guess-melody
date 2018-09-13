@@ -16,7 +16,7 @@ export default class HeaderView extends AbstractView {
     <a class="game__back" href="#">
       <span class="visually-hidden">Сыграть ещё раз</span>
       <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
-    </a>A
+    </a>
     
     <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
       <circle class="timer__line" cx="390" cy="390" r="370"

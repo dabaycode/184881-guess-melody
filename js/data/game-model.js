@@ -1,7 +1,8 @@
 import {initState, getPoints, getLives, getGameLevels, INIT_PARAMS} from './game-data';
 
 class GameModel {
-  constructor() {
+  constructor(data) {
+    this._data = data;
     this.restart();
   }
 
@@ -45,7 +46,7 @@ class GameModel {
   }
 
   restart() {
-    this._state = Object.assign({}, initState, {levels: getGameLevels()});
+    this._state = Object.assign({}, initState, {levels: getGameLevels(this._data)});
     this._state.answers = [];
   }
 
