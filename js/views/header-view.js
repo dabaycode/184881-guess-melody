@@ -23,7 +23,7 @@ export default class HeaderView extends AbstractView {
               style="filter: url(#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center; stroke-dasharray: ${CIRCLE.length};stroke-dashoffset: ${getRadius(this.state.time / initState.time, CIRCLE.radius).offset};"/>
     </svg>
     
-    <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
+    <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml" ${this.state.time <= 30 ? `style="color: red; animation: blink 1000ms steps(1, end) infinite;"` : ``}>
       <span class="timer__mins">${Math.floor(this.state.time / 60)}</span>
       <span class="timer__dots">:</span>
       <span class="timer__secs">${getSec(this.state)}</span>

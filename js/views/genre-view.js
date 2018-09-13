@@ -1,5 +1,5 @@
 import AbstractView from '../views/abstract-view';
-import {playHandler} from '../player';
+import {playHandler, playMusic, pauseMusic} from '../player';
 import HeaderView from '../views/header-view';
 
 const DEBUG = new URLSearchParams(location.search).has(`debug`);
@@ -26,7 +26,7 @@ export default class GenreView extends AbstractView {
     ${this.level.question.answers.map((it, i) => `<div class="track">
     <button class="track__button track__button--play" type="button"></button>
     <div class="track__status">
-      <audio src="${it.src}"></audio>
+      <audio src="${it.src}" preload="auto"></audio>
     </div>
     <div class="game__answer">
       <input class="game__input visually-hidden" type="checkbox" name="answer" value="${it.genre}" id="answer-${i}">
@@ -45,16 +45,31 @@ export default class GenreView extends AbstractView {
   backBtnHandler() {}
 
   bind() {
+    const tracks = this.element.querySelectorAll(`.track`);
+
+    playMusic(tracks[0].querySelector(`.track__button`));
+
+    for (let it of tracks) {
+      let btn = it.querySelector(`.track__button`);
+      if (!btn.classList.contains(`track__button--pause`)) {
+        btn.addEventListener(`click`, playHandler);
+      }
+    }
+
     const checkInputItems = Array.from(this.element.querySelectorAll(`.game__input`));
     const submitBtn = this.element.querySelector(`.game__submit`);
 
     submitBtn.disabled = `true`;
     submitBtn.addEventListener(`click`, (evt) => {
-
       evt.preventDefault();
+
+      for (let it of tracks) {
+        let btn = it.querySelector(`.track__button`);
+        pauseMusic(btn);
+      }
+
       const checkedAnswer = checkInputItems.filter((it) => it.checked).map((element) => element.value);
       this.submitBtnHandler(checkedAnswer);
-
     });
 
     checkInputItems.forEach((it) => {
@@ -67,13 +82,6 @@ export default class GenreView extends AbstractView {
         }
       });
     });
-
-    const tracks = this.element.querySelectorAll(`.track`);
-
-    for (let it of tracks) {
-      let btn = it.querySelector(`.track__button`);
-      btn.addEventListener(`click`, playHandler);
-    }
 
     this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
       this.backBtnHandler();

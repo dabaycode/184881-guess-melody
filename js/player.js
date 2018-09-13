@@ -9,16 +9,14 @@ const pauseMusic = (btn) => {
   btn.addEventListener(`click`, playHandler);
 };
 
-
 const pauseHandler = (evt) => {
   const btn = evt.target;
-
   pauseMusic(btn);
 };
 
-const playHandler = (evt) => {
+const playMusic = (btn) => {
+  btn.removeEventListener(`click`, playHandler);
 
-  const btn = evt.target;
   const form = btn.closest(`.game__tracks`);
 
   if (form) {
@@ -31,14 +29,21 @@ const playHandler = (evt) => {
     }
   }
 
-  btn.removeEventListener(`click`, playHandler);
-
   btn.classList.remove(`track__button--play`);
   btn.classList.add(`track__button--pause`);
 
-  btn.parentNode.querySelector(`audio`).play();
+  const audio = btn.parentNode.querySelector(`audio`);
 
+  audio.load();
+  audio.addEventListener(`canplaythrough`, () => audio.play());
+
+  btn.removeEventListener(`click`, playHandler);
   btn.addEventListener(`click`, pauseHandler);
 };
 
-export {playHandler};
+const playHandler = (evt) => {
+  const btn = evt.target;
+  playMusic(btn);
+};
+
+export {playHandler, playMusic, pauseMusic};

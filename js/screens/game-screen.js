@@ -5,6 +5,8 @@ import HeaderView from '../views/header-view';
 import FailView from '../views/fail-view';
 import SuccessView from '../views/success-view';
 import Application from '../application';
+import ServerWorker from '../server-worker';
+import SplashScreen from '../views/splash-view';
 
 const ScreenMap = {
   genre: GenreView,
@@ -58,7 +60,21 @@ class GameScreen {
       if (this.model.fail()) {
         Application.showResult(new FailView(this.model.state));
       } else if (this.model.success()) {
-        Application.showResult(new SuccessView(this.model.state));
+
+        const userResult = {
+          points: this.model.state.points,
+          lives: this.model.state.lives,
+          time: this.model.state.time,
+        };
+
+        ServerWorker.saveResult(userResult);
+
+        const splash = new SplashScreen();
+        showScreen(splash.element);
+        splash.start();
+
+        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new SuccessView(this.model.state, userResult, results))).then(() => splash.stop());
+
       } else {
         this.goToNextLevel();
       }

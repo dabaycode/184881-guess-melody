@@ -22,30 +22,6 @@ const CIRCLE = Object.freeze({
   },
 });
 
-const getRandomLevel = (levels, type) => {
-  const array = levels[type].slice();
-
-  return {
-    type,
-    question: array[Math.floor(Math.random() * array.length)],
-  };
-};
-
-const getGameLevels = (levels) => {
-  const array = [];
-
-  let i = 0;
-
-  while (i < (INIT_PARAMS.LEVELS_QUANTITY / 2)) {
-    array.push(getRandomLevel(levels, `genre`));
-    array.push(getRandomLevel(levels, `artist`));
-
-    i++;
-  }
-
-  return array;
-};
-
 const getPoints = (answers, lives) => {
 
   let points = INIT_PARAMS.POINTS;
@@ -120,4 +96,4 @@ const getLives = (answers) => {
   return lives;
 };
 
-export {getPoints, getResult, getLives, initState, getGameLevels, CIRCLE, INIT_PARAMS};
+export {getPoints, getResult, getLives, initState, CIRCLE, INIT_PARAMS};

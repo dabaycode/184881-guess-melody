@@ -3,17 +3,7 @@ import WelcomeScreen from './screens/welcome-screen';
 import GameModel from './data/game-model';
 import GameScreen from './screens/game-screen';
 import SplashScreen from './views/splash-view';
-import ErrorView from './views/error-view';
-import dataAdapter from './data/data-adapter';
-
-
-const checkStatus = (response) => {
-  if (response.status >= 200 && response.status < 300) {
-    return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
-  }
-};
+import ServerWorker from './server-worker';
 
 export default class Application {
 
@@ -21,13 +11,8 @@ export default class Application {
     const splash = new SplashScreen();
     showScreen(splash.element);
     splash.start();
-    window.fetch(`https://es.dump.academy/guess-melody/questions`).
-      then(checkStatus).
-      then((response) => response.json()).
-      then((data) => dataAdapter(data)).
-      then((gameData) => Application.showGame(gameData)).
-      catch(Application.showError).
-      then(() => splash.stop());
+    ServerWorker.loadData().then((gameData) => this.showGame(gameData)).
+then(() => splash.stop());
   }
 
   static showWelcome() {
@@ -36,22 +21,17 @@ export default class Application {
   }
 
   static showGame(data) {
+    this.currentData = data;
     const screen = new GameScreen(new GameModel(data));
     showScreen(screen.element);
   }
 
   static showResult(screen) {
     screen.replayBtnHandler = () => {
-      this.start();
+      this.showGame(this.currentData);
     };
 
     showScreen(screen.element);
   }
-
-  static showError(error) {
-    const errorView = new ErrorView(error);
-    showScreen(errorView.element);
-  }
-
 
 }

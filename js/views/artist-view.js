@@ -1,5 +1,5 @@
 import AbstractView from '../views/abstract-view';
-import {playHandler} from '../player';
+import {playMusic, pauseMusic} from '../player';
 import HeaderView from '../views/header-view';
 
 const DEBUG = new URLSearchParams(location.search).has(`debug`);
@@ -23,7 +23,7 @@ export default class ArtistView extends AbstractView {
   
     <div class="game__track">
       <button class="track__button track__button--play" type="button"></button>
-      <audio src="${this.level.question.src}"></audio>
+      <audio src="${this.level.question.src}" preload="auto"></audio>
     </div>
   
     <form class="game__artist">
@@ -48,18 +48,19 @@ export default class ArtistView extends AbstractView {
   bind() {
     const track = this.element.querySelector(`.game__track`);
     const btn = track.querySelector(`.track__button`);
-
     const inputItems = this.element.querySelectorAll(`.artist__input`);
+
+    playMusic(btn);
 
     inputItems.forEach((it) => {
       it.addEventListener(`change`, (evt) => {
         const answer = [evt.target.value];
 
+        pauseMusic(btn);
+
         this.submitBtnHandler(answer);
       });
     });
-
-    btn.addEventListener(`click`, playHandler);
 
     this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
       this.backBtnHandler();
