@@ -15,6 +15,12 @@ then(() => splash.stop()).catch(ServerWorker.showError);
   }
 
   static showWelcome(data = this._currentData) {
+
+    if (data === undefined) {
+      ServerWorker.showError();
+      return;
+    }
+
     this._currentData = data;
 
     const welcome = new WelcomeScreen(this._currentData);
