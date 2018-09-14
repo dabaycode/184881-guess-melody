@@ -42,10 +42,7 @@ class GameModel {
     const getKeys = (levelType) => this.currentLevel.question.answers.filter((it) => it.isRight).map((el) => el[levelType]);
 
     const isAnswerRight = (keys, answers) => {
-      if (keys.toString() === answers.toString()) {
-        return true;
-      }
-      return false;
+      return (keys.toString() === answers.toString());
     };
 
     this._state.answers.push({isRight: isAnswerRight(getKeys(this.currentLevel.type), answer), time: initState.time - this._state.time});

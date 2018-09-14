@@ -1,6 +1,7 @@
 import AbstractView from '../views/abstract-view';
 import {playHandler, pauseHandler, pauseMusic} from '../player';
 import HeaderView from '../views/header-view';
+import ServerWorker from '../server-worker';
 
 const DEBUG = new URLSearchParams(location.search).has(`debug`);
 const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box-sizing: border-box;"`;
@@ -46,8 +47,13 @@ export default class GenreView extends AbstractView {
   bind() {
     const tracks = this.element.querySelectorAll(`.track`);
 
-    this.element.querySelector(`.track__button`).classList.replace(`track__button--play`, `track__button--pause`);
-    this.element.querySelector(`audio`).setAttribute(`autoplay`, true);
+    const firtsBtn = this.element.querySelector(`.track__button`);
+
+    firtsBtn.classList.replace(`track__button--play`, `track__button--pause`);
+
+    const firstAudio = this.element.querySelector(`audio`);
+    firstAudio.setAttribute(`autoplay`, true);
+    firstAudio.addEventListener(`error`, ServerWorker.showError);
 
     for (let it of tracks) {
       let btn = it.querySelector(`.track__button`);

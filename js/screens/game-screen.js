@@ -44,6 +44,7 @@ class GameScreen {
 
       if (this.model.fail()) {
         Application.showResult(new FailView(this.model.state, this.model.userResult));
+        return;
       }
 
       this.startTimer();
@@ -69,7 +70,7 @@ class GameScreen {
         showScreen(splash.element);
         splash.start();
 
-        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new SuccessView(this.model.state, this.model.userResult, results))).then(() => splash.stop());
+        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new SuccessView(this.model.state, this.model.userResult, results))).then(() => splash.stop()).catch(ServerWorker.showError);
 
       } else {
         this.goToNextLevel();

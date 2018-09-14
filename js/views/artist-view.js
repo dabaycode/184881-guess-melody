@@ -1,6 +1,7 @@
 import AbstractView from '../views/abstract-view';
 import {pauseHandler, pauseMusic} from '../player';
 import HeaderView from '../views/header-view';
+import ServerWorker from '../server-worker';
 
 const DEBUG = new URLSearchParams(location.search).has(`debug`);
 const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box-sizing: border-box;"`;
@@ -48,7 +49,10 @@ export default class ArtistView extends AbstractView {
     const btn = track.querySelector(`.track__button`);
     const inputItems = this.element.querySelectorAll(`.artist__input`);
 
-    this.element.querySelector(`audio`).setAttribute(`autoplay`, true);
+    const firstAudio = this.element.querySelector(`audio`);
+    firstAudio.setAttribute(`autoplay`, true);
+    firstAudio.addEventListener(`error`, ServerWorker.showError);
+
     btn.classList.replace(`track__button--play`, `track__button--pause`);
 
     btn.addEventListener(`click`, pauseHandler);

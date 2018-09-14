@@ -1,3 +1,5 @@
+import ServerWorker from './server-worker';
+
 const pauseMusic = (btn) => {
   btn.removeEventListener(`click`, pauseHandler);
 
@@ -21,16 +23,14 @@ const playMusic = (btn) => {
   const audio = btn.parentNode.querySelector(`audio`);
 
   if (form) {
-    const buttons = form.querySelectorAll(`.track__button`);
-    for (let it of buttons) {
-      if (it.classList.contains(`track__button--pause`)) {
-        pauseMusic(it);
-      }
-    }
+    const buttonPlay = form.querySelector(`.track__button--pause`);
+    pauseMusic(buttonPlay);
   }
 
   btn.classList.remove(`track__button--play`);
   btn.classList.add(`track__button--pause`);
+
+  audio.addEventListener(`error`, ServerWorker.showError);
 
   audio.play();
 

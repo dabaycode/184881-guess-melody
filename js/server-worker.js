@@ -2,7 +2,7 @@ import ErrorView from './views/error-view';
 import showScreen from './show-screen';
 import dataAdapter from './data/data-adapter';
 
-const URL = `https://es.dump.academy/guess-melody/`;
+const URL = `https://es.dump.academy/guess-melody`;
 const APP_ID = `22101985`;
 
 const StatusMap = {
@@ -21,7 +21,7 @@ const checkStatus = (response) => {
 export default class ServerWorker {
 
   static loadData() {
-    return fetch(URL + `questions`).
+    return fetch(`${URL}/questions`).
     then(checkStatus).
     then((response) => response.json()).
     then((data) => dataAdapter(data)).

@@ -3,12 +3,9 @@ const getGenreAnswers = (level) => {
   const newAnswers = level.answers.slice();
 
   newAnswers.forEach((item) => {
-    if (item.genre === rightAnswer) {
-      item.isRight = true;
-    } else {
-      item.isRight = false;
-    }
+    item.isRight = (item.genre === rightAnswer);
   });
+
   return newAnswers;
 };
 
