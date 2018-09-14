@@ -2,16 +2,13 @@ import AbstractView from './abstract-view';
 import {getResult} from '../data/game-data';
 
 export default class FailView extends AbstractView {
-  constructor(state) {
+  constructor(state, userResult, totalResults) {
     super();
-    this.state = state;
-    this.userResult = {
-      points: state.points,
-      lives: state.lives,
-      time: state.time,
-    };
-    this.RESULTS = [1, 4, 13, 5];
-    this.title = state.lives === 0 ? `Какая жалость!` : `Увы и ах!`;
+    this._state = state;
+    this._userResult = userResult;
+    this._totalResults = totalResults;
+
+    this.title = this._state.lives === 0 ? `Какая жалость!` : `Увы и ах!`;
   }
 
   get template() {
@@ -19,7 +16,7 @@ export default class FailView extends AbstractView {
 <section class="result">
 <div class="result__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
 <h2 class="result__title">${this.title}</h2>
-<p class="result__total result__total--fail">${getResult(this.RESULTS, this.userResult)}</p>
+<p class="result__total result__total--fail">${getResult(this._totalResults, this._userResult)}</p>
 <button class="result__replay" type="button">Сыграть ещё раз</button>
 </section>
 `;
