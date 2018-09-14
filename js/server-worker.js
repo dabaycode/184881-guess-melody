@@ -31,7 +31,7 @@ export default class ServerWorker {
   static loadResults() {
     return fetch(`${URL}/stats/${APP_ID}`)
       .then(checkStatus)
-      .then((response) => response.json());
+      .then((response) => response.json()).catch(this.showError);
   }
 
   static saveResult(data) {
@@ -43,7 +43,7 @@ export default class ServerWorker {
       method: `POST`
     };
     return fetch(`${URL}/stats/${APP_ID}`, request)
-      .then(checkStatus);
+      .then(checkStatus).catch(this.showError);
   }
 
 

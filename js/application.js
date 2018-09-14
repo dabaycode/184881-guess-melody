@@ -4,7 +4,7 @@ import GameModel from './data/game-model';
 import GameScreen from './screens/game-screen';
 import SplashScreen from './views/splash-view';
 import ServerWorker from './server-worker';
-
+import ErrorView from './views/error-view';
 export default class Application {
 
   static start() {
@@ -12,7 +12,7 @@ export default class Application {
     showScreen(splash.element);
     splash.start();
     ServerWorker.loadData().then((gameData) => this.showGame(gameData)).
-then(() => splash.stop());
+then(() => splash.stop()).catch(this.showError);
   }
 
   static showWelcome() {
@@ -32,6 +32,10 @@ then(() => splash.stop());
     };
 
     showScreen(screen.element);
+  }
+
+  static showError(error) {
+    showScreen(new ErrorView(error).element);
   }
 
 }

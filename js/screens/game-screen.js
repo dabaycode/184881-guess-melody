@@ -14,10 +14,11 @@ const ScreenMap = {
 };
 
 class GameScreen {
-  constructor(model) {
+  constructor(model, audio) {
     this.model = model;
+    this.audio = audio;
     this.SEC = 1000;
-    this.screen = new ScreenMap[this.model.currentLevel.type](this.model.state, this.model.currentLevel);
+    this.screen = new ScreenMap[this.model.currentLevel.type](this.model.state, this.model.currentLevel, this.audio);
     this.bind();
   }
 

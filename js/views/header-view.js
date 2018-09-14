@@ -1,5 +1,5 @@
 import AbstractView from '../views/abstract-view';
-import Application from '../application';
+import ConfirmView from './confirm-view';
 import {CIRCLE, initState} from '../data/game-data';
 import {getRadius} from '../get-radius';
 import {getSec} from '../utils';
@@ -39,7 +39,8 @@ export default class HeaderView extends AbstractView {
 
   bind() {
     this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
-      Application.showWelcome();
+      const modal = new ConfirmView();
+      document.body.appendChild(modal.element);
     });
   }
 }

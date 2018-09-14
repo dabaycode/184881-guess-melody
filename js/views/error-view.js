@@ -1,19 +1,17 @@
-import AbstractView from './abstract-view.js';
+import AbstractView from "./abstract-view";
 
-class ErrorView extends AbstractView {
-
+export default class ModalView extends AbstractView {
   constructor(error) {
     super();
-    this.error = error;
+    this._error = error;
   }
 
   get template() {
-    return `
-      <div class="end">
-        <p>Произошла ошибка: ${this.error.message}</p>
-      </div>`;
+    return `<section class="modal" id="fdff">
+    <h2 class="modal__title">Произошла ошибка!</h2>
+    <p class="modal__text">Статус: ${this._error}. Пожалуйста, перезагрузите страницу.</p>
+  </section>`;
   }
 
+  bind() {}
 }
-
-export default ErrorView;

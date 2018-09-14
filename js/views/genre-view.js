@@ -1,6 +1,7 @@
 import AbstractView from '../views/abstract-view';
-import {playHandler, playMusic, pauseMusic} from '../player';
+import {playHandler, pauseHandler, pauseMusic} from '../player';
 import HeaderView from '../views/header-view';
+import ModalView from './confirm-view';
 
 const DEBUG = new URLSearchParams(location.search).has(`debug`);
 const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box-sizing: border-box;"`;
@@ -28,6 +29,7 @@ export default class GenreView extends AbstractView {
     <div class="track__status">
       <audio src="${it.src}" preload="auto"></audio>
     </div>
+
     <div class="game__answer">
       <input class="game__input visually-hidden" type="checkbox" name="answer" value="${it.genre}" id="answer-${i}">
       <label class="game__check" ${DEBUG && it.isRight ? DEBUG_STYLE : ``} for="answer-${i}">Отметить</label>
@@ -42,17 +44,18 @@ export default class GenreView extends AbstractView {
 
   submitBtnHandler() {}
 
-  backBtnHandler() {}
-
   bind() {
     const tracks = this.element.querySelectorAll(`.track`);
 
-    playMusic(tracks[0].querySelector(`.track__button`));
+    this.element.querySelector(`.track__button`).classList.replace(`track__button--play`, `track__button--pause`);
+    this.element.querySelector(`audio`).setAttribute(`autoplay`, true);
 
     for (let it of tracks) {
       let btn = it.querySelector(`.track__button`);
       if (!btn.classList.contains(`track__button--pause`)) {
         btn.addEventListener(`click`, playHandler);
+      } else {
+        btn.addEventListener(`click`, pauseHandler);
       }
     }
 
@@ -81,10 +84,6 @@ export default class GenreView extends AbstractView {
           submitBtn.disabled = `true`;
         }
       });
-    });
-
-    this.element.querySelector(`.game__back`).addEventListener(`click`, () => {
-      this.backBtnHandler();
     });
   }
 }
