@@ -94,19 +94,19 @@ describe(`Game statistic`, () => {
 
   describe(`Total statistic`, () => {
     it(`Should return string`, () => {
-      assert.isString(getResult(RESULTS, SUCCESS_RESULT));
+      assert.isString(getResult(SUCCESS_RESULT, RESULTS));
     });
 
     it(`Should return «Время вышло! Вы не успели отгадать все мелодии» if time = 0`, () => {
-      assert.equal(getResult(RESULTS, FAIL_TIME_RESULT), `Время вышло! Вы не успели отгадать все мелодии`);
+      assert.equal(getResult(FAIL_TIME_RESULT, RESULTS), `Время вышло! Вы не успели отгадать все мелодии`);
     });
 
     it(`Should return «У вас закончились все попытки. Ничего, повезёт в следующий раз!» if lives = 0`, () => {
-      assert.equal(getResult(RESULTS, FAIL_LIVES_RESULT), `У вас закончились все попытки. Ничего, повезёт в следующий раз!`);
+      assert.equal(getResult(FAIL_LIVES_RESULT, RESULTS), `У вас закончились все попытки. Ничего, повезёт в следующий раз!`);
     });
 
     it(`Should return string that include «Вы заняли» if points > 0 and time > 0 and lives > 0`, () => {
-      assert.include(getResult(RESULTS, SUCCESS_RESULT), `Вы заняли`, `String contains value`);
+      assert.include(getResult(SUCCESS_RESULT, RESULTS), `Вы заняли`, `String contains value`);
     });
   });
 });
