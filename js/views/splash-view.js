@@ -3,8 +3,8 @@ import AbstractView from './abstract-view';
 export default class SplashView extends AbstractView {
   constructor() {
     super();
-    this.cursor = 0;
-    this.symbolsSeq = [``, `.`, `..`, `...`];
+    this._cursor = 0;
+    this._symbolsSeq = [``, `.`, `..`, `...`];
   }
 
   get template() {
@@ -12,8 +12,8 @@ export default class SplashView extends AbstractView {
   }
 
   start() {
-    this.cursor = ++this.cursor >= this.symbolsSeq.length ? 0 : this.cursor;
-    this.element.innerHTML = `<p style='color: black;'>Загрузка${this.symbolsSeq[this.cursor]}</p>`;
+    this._cursor = ++this._cursor >= this._symbolsSeq.length ? 0 : this._cursor;
+    this.element.innerHTML = `<p style='color: black;'>Загрузка${this._symbolsSeq[this._cursor]}</p>`;
     this.timeout = setTimeout(() => this.start(), 300);
   }
 

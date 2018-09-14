@@ -58,15 +58,20 @@ class GameScreen {
 
       this.model.addAnswer(answer);
 
-      if (this.model.fail()) {
-        Application.showResult(new FailView(this.model.state));
-      } else if (this.model.success()) {
+      const userResult = {
+        points: this.model.state.points,
+        lives: this.model.state.lives,
+        time: this.model.state.time,
+      };
 
-        const userResult = {
-          points: this.model.state.points,
-          lives: this.model.state.lives,
-          time: this.model.state.time,
-        };
+      if (this.model.fail()) {
+        const splash = new SplashScreen();
+        showScreen(splash.element);
+        splash.start();
+
+        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new FailView(userResult, results))).then(() => splash.stop());
+
+      } else if (this.model.success()) {
 
         ServerWorker.saveResult(userResult);
 

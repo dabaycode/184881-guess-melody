@@ -21,14 +21,14 @@ then(() => splash.stop()).catch(this.showError);
   }
 
   static showGame(data) {
-    this.currentData = data;
+    this._currentData = data;
     const screen = new GameScreen(new GameModel(data));
     showScreen(screen.element);
   }
 
   static showResult(screen) {
     screen.replayBtnHandler = () => {
-      this.showGame(this.currentData);
+      this.showGame(this._currentData);
     };
 
     showScreen(screen.element);

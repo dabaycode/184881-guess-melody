@@ -8,22 +8,22 @@ const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box
 export default class GenreView extends AbstractView {
   constructor(state, level) {
     super();
-    this.state = state;
-    this.level = level;
+    this._state = state;
+    this._level = level;
   }
 
   get template() {
 
     return `
     <section class="game game--genre">
-    ${new HeaderView(this.state).template}
+    ${new HeaderView(this._state).template}
     <section class="game__screen">
   
-    <h2 class="game__title">${this.level.question.title}</h2>
+    <h2 class="game__title">${this._level.question.title}</h2>
   
     <form class="game__tracks">
 
-    ${this.level.question.answers.map((it, i) => `<div class="track">
+    ${this._level.question.answers.map((it, i) => `<div class="track">
     <button class="track__button track__button--play" type="button"></button>
     <div class="track__status">
       <audio src="${it.src}" preload="auto"></audio>

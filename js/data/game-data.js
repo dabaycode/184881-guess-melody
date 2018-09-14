@@ -1,4 +1,4 @@
-const INIT_PARAMS = Object.freeze({
+const InitParams = Object.freeze({
   POINTS: 0,
   LIVES: 3,
   FAST_TIME: 30,
@@ -9,13 +9,13 @@ const INIT_PARAMS = Object.freeze({
 });
 
 const initState = Object.freeze({
-  time: INIT_PARAMS.TIME,
-  lives: INIT_PARAMS.LIVES,
+  time: InitParams.TIME,
+  lives: InitParams.LIVES,
   level: 0,
   points: 0,
 });
 
-const CIRCLE = Object.freeze({
+const Circle = Object.freeze({
   radius: 370,
   get length() {
     return Math.ceil(2 * Math.PI * this.radius);
@@ -24,9 +24,9 @@ const CIRCLE = Object.freeze({
 
 const getPoints = (answers, lives) => {
 
-  let points = INIT_PARAMS.POINTS;
+  let points = InitParams.POINTS;
 
-  if (answers.length < INIT_PARAMS.LEVELS_QUANTITY) {
+  if (answers.length < InitParams.LEVELS_QUANTITY) {
     return -1;
   }
 
@@ -37,12 +37,12 @@ const getPoints = (answers, lives) => {
   answers.forEach((it) => {
 
     if (it.isRight) {
-      points += INIT_PARAMS.POINT_RIGHT;
-      if (it.time <= INIT_PARAMS.FAST_TIME) {
-        points += INIT_PARAMS.POINT_RIGHT;
+      points += InitParams.POINT_RIGHT;
+      if (it.time <= InitParams.FAST_TIME) {
+        points += InitParams.POINT_RIGHT;
       }
     } else {
-      points -= INIT_PARAMS.POINT_FALSE;
+      points -= InitParams.POINT_FALSE;
     }
   });
 
@@ -81,7 +81,7 @@ const getResult = (totalResults, gamerResult) => {
 
 const getLives = (answers) => {
 
-  let lives = INIT_PARAMS.LIVES;
+  let lives = InitParams.LIVES;
 
   answers.forEach((it) => {
     if (!it.isRight) {
@@ -96,4 +96,4 @@ const getLives = (answers) => {
   return lives;
 };
 
-export {getPoints, getResult, getLives, initState, CIRCLE, INIT_PARAMS};
+export {getPoints, getResult, getLives, initState, Circle, InitParams};

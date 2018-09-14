@@ -8,27 +8,27 @@ const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box
 export default class ArtistView extends AbstractView {
   constructor(state, level) {
     super();
-    this.state = state;
-    this.level = level;
+    this._state = state;
+    this._level = level;
   }
 
   get template() {
 
     return `
     <section class="game game--artist">
-    ${new HeaderView(this.state).template}
+    ${new HeaderView(this._state).template}
     <section class="game__screen">
   
-    <h2 class="game__title">${this.level.question.title}</h2>
+    <h2 class="game__title">${this._level.question.title}</h2>
   
     <div class="game__track">
       <button class="track__button track__button--play" type="button"></button>
-      <audio src="${this.level.question.src}" preload="auto"></audio>
+      <audio src="${this._level.question.src}" preload="auto"></audio>
     </div>
   
     <form class="game__artist">
   
-    ${this.level.question.answers.map((it, i) => `<div class="artist">
+    ${this._level.question.answers.map((it, i) => `<div class="artist">
     <input class="artist__input visually-hidden" type="radio" name="answer" value="${it.artist}" id="answer-${i}">
     <label class="artist__name" for="answer-${i}">
       <img class="artist__picture" src="${it.image}" alt="${it.artist}" ${DEBUG && it.isRight ? DEBUG_STYLE : ``}>
