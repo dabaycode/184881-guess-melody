@@ -1,7 +1,6 @@
 import AbstractView from '../views/abstract-view';
 import {playHandler, pauseHandler, pauseMusic} from '../player';
 import HeaderView from '../views/header-view';
-import ModalView from './confirm-view';
 
 const DEBUG = new URLSearchParams(location.search).has(`debug`);
 const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box-sizing: border-box;"`;
