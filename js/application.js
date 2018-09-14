@@ -4,24 +4,25 @@ import GameModel from './data/game-model';
 import GameScreen from './screens/game-screen';
 import SplashScreen from './views/splash-view';
 import ServerWorker from './server-worker';
-import ErrorView from './views/error-view';
 export default class Application {
 
   static start() {
     const splash = new SplashScreen();
     showScreen(splash.element);
     splash.start();
-    ServerWorker.loadData().then((gameData) => this.showGame(gameData)).
-then(() => splash.stop()).catch(this.showError);
+    ServerWorker.loadData().then((gameData) => this.showWelcome(gameData)).
+then(() => splash.stop()).catch(ServerWorker.showError);
   }
 
-  static showWelcome() {
-    const welcome = new WelcomeScreen();
+  static showWelcome(data = this._currentData) {
+    this._currentData = data;
+
+    const welcome = new WelcomeScreen(this._currentData);
     showScreen(welcome.element);
   }
 
   static showGame(data) {
-    this._currentData = data;
+
     const screen = new GameScreen(new GameModel(data));
     showScreen(screen.element);
   }
@@ -32,10 +33,6 @@ then(() => splash.stop()).catch(this.showError);
     };
 
     showScreen(screen.element);
-  }
-
-  static showError(error) {
-    showScreen(new ErrorView(error).element);
   }
 
 }
