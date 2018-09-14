@@ -24,14 +24,14 @@ export default class ServerWorker {
     return fetch(`${URL}/questions`).
     then(checkStatus).
     then((response) => response.json()).
-    then((data) => dataAdapter(data)).
-    catch(this.showError);
+    then((data) => dataAdapter(data));
   }
 
   static loadResults() {
     return fetch(`${URL}/stats/${APP_ID}`)
       .then(checkStatus)
-      .then((response) => response.json()).catch(this.showError);
+      .then((response) => response.json())
+      .catch(this.showError);
   }
 
   static saveResult(data) {
@@ -43,7 +43,8 @@ export default class ServerWorker {
       method: `POST`
     };
     return fetch(`${URL}/stats/${APP_ID}`, request)
-      .then(checkStatus).catch(this.showError);
+      .then(checkStatus)
+      .catch(this.showError);
   }
 
 

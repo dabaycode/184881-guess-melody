@@ -10,17 +10,13 @@ export default class Application {
     const splash = new SplashScreen();
     showScreen(splash.element);
     splash.start();
-    ServerWorker.loadData().then((gameData) => this.showWelcome(gameData)).
-then(() => splash.stop()).catch(ServerWorker.showError);
+    ServerWorker.loadData().
+    then((gameData) => this.showWelcome(gameData)).
+    then(() => splash.stop()).
+    catch(ServerWorker.showError);
   }
 
   static showWelcome(data = this._currentData) {
-
-    if (data === undefined) {
-      ServerWorker.showError();
-      return;
-    }
-
     this._currentData = data;
 
     const welcome = new WelcomeScreen(this._currentData);
