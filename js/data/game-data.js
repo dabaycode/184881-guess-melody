@@ -53,7 +53,7 @@ const getPoints = (answers, lives) => {
   return points;
 };
 
-const getResult = (totalResults, gamerResult) => {
+const getResult = (gamerResult, totalResults = []) => {
   const stat = totalResults.slice();
   const gameResult = Object.assign({}, gamerResult);
 

@@ -41,9 +41,11 @@ class GameScreen {
     this.timer = setTimeout(() => {
       this.model.tick();
       this.updateHeader();
+
       if (this.model.fail()) {
-        Application.showResult(new FailView(this.model.state));
+        Application.showResult(new FailView(this.model.state, this.model.userResult));
       }
+
       this.startTimer();
     }, this.SEC);
   }
@@ -58,28 +60,16 @@ class GameScreen {
 
       this.model.addAnswer(answer);
 
-      const userResult = {
-        points: this.model.state.points,
-        lives: this.model.state.lives,
-        time: this.model.state.time,
-      };
-
       if (this.model.fail()) {
-        const splash = new SplashScreen();
-        showScreen(splash.element);
-        splash.start();
-
-        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new FailView(userResult, results))).then(() => splash.stop());
-
+        Application.showResult(new FailView(this.model.state, this.model.userResult));
       } else if (this.model.success()) {
-
-        ServerWorker.saveResult(userResult);
+        ServerWorker.saveResult(this.model.userResult);
 
         const splash = new SplashScreen();
         showScreen(splash.element);
         splash.start();
 
-        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new SuccessView(this.model.state, userResult, results))).then(() => splash.stop());
+        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new SuccessView(this.model.state, this.model.userResult, results))).then(() => splash.stop());
 
       } else {
         this.goToNextLevel();

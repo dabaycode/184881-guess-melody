@@ -30,6 +30,14 @@ class GameModel {
     this._state.level++;
   }
 
+  get userResult() {
+    return {
+      points: this._state.points,
+      lives: this._state.lives,
+      time: this._state.time,
+    };
+  }
+
   addAnswer(answer) {
     const getKeys = (levelType) => this.currentLevel.question.answers.filter((it) => it.isRight).map((el) => el[levelType]);
 
@@ -61,6 +69,8 @@ class GameModel {
   tick() {
     this._state.time--;
   }
+
+
 }
 
 export default GameModel;
