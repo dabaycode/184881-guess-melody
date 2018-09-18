@@ -2,8 +2,8 @@ import WelcomeView from '../views/welcome-view';
 import Application from '../application';
 
 export default class WelcomeScreen {
-  constructor(model) {
-    this.model = model;
+  constructor(data) {
+    this.data = data;
     this.screen = new WelcomeView();
     this.bind();
   }
@@ -15,7 +15,7 @@ export default class WelcomeScreen {
 
   bind() {
     this.screen.playBtnHandler = () => {
-      Application.showGame();
+      Application.showGame(this.data);
     };
   }
 }

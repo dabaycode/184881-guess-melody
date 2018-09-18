@@ -1,7 +1,8 @@
-import {initState, getPoints, getLives, getGameLevels, INIT_PARAMS} from './game-data';
+import {initState, getPoints, getLives, InitParams} from './game-data';
 
 class GameModel {
-  constructor() {
+  constructor(data) {
+    this._data = data;
     this.restart();
   }
 
@@ -29,14 +30,19 @@ class GameModel {
     this._state.level++;
   }
 
+  get userResult() {
+    return {
+      points: this._state.points,
+      lives: this._state.lives,
+      time: this._state.time,
+    };
+  }
+
   addAnswer(answer) {
     const getKeys = (levelType) => this.currentLevel.question.answers.filter((it) => it.isRight).map((el) => el[levelType]);
 
     const isAnswerRight = (keys, answers) => {
-      if (keys.toString() === answers.toString()) {
-        return true;
-      }
-      return false;
+      return (keys.toString() === answers.toString());
     };
 
     this._state.answers.push({isRight: isAnswerRight(getKeys(this.currentLevel.type), answer), time: initState.time - this._state.time});
@@ -45,7 +51,7 @@ class GameModel {
   }
 
   restart() {
-    this._state = Object.assign({}, initState, {levels: getGameLevels()});
+    this._state = Object.assign({}, initState, {levels: this._data.slice(0, InitParams.LEVELS_QUANTITY)});
     this._state.answers = [];
   }
 
@@ -54,12 +60,14 @@ class GameModel {
   }
 
   success() {
-    return this._state.level === INIT_PARAMS.LEVELS_QUANTITY - 1;
+    return this._state.level === InitParams.LEVELS_QUANTITY - 1;
   }
 
   tick() {
     this._state.time--;
   }
+
+
 }
 
 export default GameModel;

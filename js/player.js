@@ -1,44 +1,39 @@
-const pauseMusic = (btn) => {
-  btn.removeEventListener(`click`, pauseHandler);
+const playMusic = (btn) => {
+  btn.classList.replace(`track__button--play`, `track__button--pause`);
 
-  btn.classList.remove(`track__button--pause`);
-  btn.classList.add(`track__button--play`);
+  const audio = btn.parentNode.querySelector(`audio`);
+  audio.play().catch(() => {});
+};
+
+const pauseMusic = (btn) => {
+  btn.classList.replace(`track__button--pause`, `track__button--play`);
+
 
   btn.parentNode.querySelector(`audio`).pause();
-
-  btn.addEventListener(`click`, playHandler);
 };
 
-
-const pauseHandler = (evt) => {
-  const btn = evt.target;
-
-  pauseMusic(btn);
+const stopMusic = (audioElements) => {
+  Array.from(audioElements).forEach((audio) => audio.pause());
 };
 
-const playHandler = (evt) => {
+const playerWorker = (btn) => {
+  if (btn.classList.contains(`track__button--play`)) {
 
-  const btn = evt.target;
-  const form = btn.closest(`.game__tracks`);
+    const form = btn.closest(`.game__tracks`);
 
-  if (form) {
-    const trackItems = form.querySelectorAll(`audio`);
-    for (let it of trackItems) {
-      if (it.paused === false) {
-        const itBtn = it.parentNode.parentNode.querySelector(`.track__button`);
-        pauseMusic(itBtn);
+    if (form) {
+      const playingButton = form.querySelector(`.track__button--pause`);
+
+      if (playingButton) {
+        pauseMusic(playingButton);
       }
     }
+
+    playMusic(btn);
+
+  } else if (btn.classList.contains(`track__button--pause`)) {
+    pauseMusic(btn);
   }
-
-  btn.removeEventListener(`click`, playHandler);
-
-  btn.classList.remove(`track__button--play`);
-  btn.classList.add(`track__button--pause`);
-
-  btn.parentNode.querySelector(`audio`).play();
-
-  btn.addEventListener(`click`, pauseHandler);
 };
 
-export {playHandler};
+export {playerWorker, stopMusic};

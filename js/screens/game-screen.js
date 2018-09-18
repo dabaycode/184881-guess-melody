@@ -5,6 +5,8 @@ import HeaderView from '../views/header-view';
 import FailView from '../views/fail-view';
 import SuccessView from '../views/success-view';
 import Application from '../application';
+import ServerWorker from '../server-worker';
+import SplashScreen from '../views/splash-view';
 
 const ScreenMap = {
   genre: GenreView,
@@ -38,9 +40,12 @@ class GameScreen {
     this.timer = setTimeout(() => {
       this.model.tick();
       this.updateHeader();
+
       if (this.model.fail()) {
-        Application.showResult(new FailView(this.model.state));
+        Application.showResult(new FailView(this.model.state, this.model.userResult));
+        return;
       }
+
       this.startTimer();
     }, this.SEC);
   }
@@ -56,9 +61,16 @@ class GameScreen {
       this.model.addAnswer(answer);
 
       if (this.model.fail()) {
-        Application.showResult(new FailView(this.model.state));
+        Application.showResult(new FailView(this.model.state, this.model.userResult));
       } else if (this.model.success()) {
-        Application.showResult(new SuccessView(this.model.state));
+        ServerWorker.saveResult(this.model.userResult);
+
+        const splash = new SplashScreen();
+        showScreen(splash.element);
+        splash.start();
+
+        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new SuccessView(this.model.state, this.model.userResult, results))).then(() => splash.stop()).catch((error) => ServerWorker.showError(error));
+
       } else {
         this.goToNextLevel();
       }

@@ -2,22 +2,36 @@ import showScreen from './show-screen';
 import WelcomeScreen from './screens/welcome-screen';
 import GameModel from './data/game-model';
 import GameScreen from './screens/game-screen';
-
+import SplashScreen from './views/splash-view';
+import ServerWorker from './server-worker';
 export default class Application {
 
-  static showWelcome() {
-    const welcome = new WelcomeScreen();
+  static start() {
+    const splash = new SplashScreen();
+    showScreen(splash.element);
+    splash.start();
+    ServerWorker.loadData().
+    then((gameData) => this.showWelcome(gameData)).
+    then(() => splash.stop()).
+    catch((error) => ServerWorker.showError(error));
+  }
+
+  static showWelcome(data = this._currentData) {
+    this._currentData = data;
+
+    const welcome = new WelcomeScreen(this._currentData);
     showScreen(welcome.element);
   }
 
-  static showGame() {
-    const screen = new GameScreen(new GameModel());
+  static showGame(data) {
+
+    const screen = new GameScreen(new GameModel(data));
     showScreen(screen.element);
   }
 
   static showResult(screen) {
     screen.replayBtnHandler = () => {
-      this.showGame();
+      this.showGame(this._currentData);
     };
 
     showScreen(screen.element);

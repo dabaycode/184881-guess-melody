@@ -1,13 +1,13 @@
-const getRandomElement = (array) => array[Math.floor(Math.random() * array.length)];
+const Time = {
+  ONE_MIN: 60,
+  TWO_DIGIT_NUMBER: 10,
+};
+
 
 const getElementFromTemplate = (str) => new DOMParser().parseFromString(str, `text/html`).body.firstChild;
 
 const getSec = (state) => {
-  if (state.time % 60 < 10) {
-    return `0` + Math.floor(state.time % 60);
-  } else {
-    return Math.floor(state.time % 60);
-  }
+  return (state.time % Time.ONE_MIN + ``).padStart(2, `0`);
 };
 
-export {getRandomElement, getElementFromTemplate, getSec};
+export {getElementFromTemplate, getSec};
