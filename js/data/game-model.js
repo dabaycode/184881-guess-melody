@@ -19,11 +19,11 @@ class GameModel {
   }
 
   get levels() {
-    return this._state.levels;
+    return this._levels;
   }
 
   get currentLevel() {
-    return this._state.levels[this._state.level];
+    return this._levels[this._state.level];
   }
 
   plusLevel() {
@@ -51,7 +51,8 @@ class GameModel {
   }
 
   restart() {
-    this._state = Object.assign({}, initState, {levels: this._data.slice(0, InitParams.LEVELS_QUANTITY)});
+    this._levels = this._data.slice(0, InitParams.LEVELS_QUANTITY);
+    this._state = Object.assign({}, initState);
     this._state.answers = [];
   }
 
