@@ -13,9 +13,8 @@ const StatusMap = {
 const checkStatus = (response) => {
   if (response.status >= StatusMap.SUCСESS && response.status < StatusMap.MULTIPLE_CHOICES) {
     return response;
-  } else {
-    throw new Error(`${response.status}: ${response.statusText}`);
   }
+  throw new Error(`${response.status}: ${response.statusText}`);
 };
 
 export default class ServerWorker {
@@ -24,14 +23,14 @@ export default class ServerWorker {
     return fetch(`${URL}/questions`).
     then(checkStatus).
     then((response) => response.json()).
-    then((data) => dataAdapter(data)).
-    catch(this.showError);
+    then((data) => dataAdapter(data));
   }
 
   static loadResults() {
     return fetch(`${URL}/stats/${APP_ID}`)
       .then(checkStatus)
-      .then((response) => response.json()).catch(this.showError);
+      .then((response) => response.json())
+      .catch((error) => this.showError(error));
   }
 
   static saveResult(data) {
@@ -43,7 +42,8 @@ export default class ServerWorker {
       method: `POST`
     };
     return fetch(`${URL}/stats/${APP_ID}`, request)
-      .then(checkStatus).catch(this.showError);
+      .then(checkStatus)
+      .catch((error) => this.showError(error));
   }
 
 
@@ -52,5 +52,4 @@ export default class ServerWorker {
     showScreen(errorView.element);
   }
 }
-
 

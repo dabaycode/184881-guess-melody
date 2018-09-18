@@ -14,11 +14,10 @@ const ScreenMap = {
 };
 
 class GameScreen {
-  constructor(model, audio) {
+  constructor(model) {
     this.model = model;
-    this.audio = audio;
     this.SEC = 1000;
-    this.screen = new ScreenMap[this.model.currentLevel.type](this.model.state, this.model.currentLevel, this.audio);
+    this.screen = new ScreenMap[this.model.currentLevel.type](this.model.state, this.model.currentLevel);
     this.bind();
   }
 
@@ -70,7 +69,7 @@ class GameScreen {
         showScreen(splash.element);
         splash.start();
 
-        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new SuccessView(this.model.state, this.model.userResult, results))).then(() => splash.stop()).catch(ServerWorker.showError);
+        ServerWorker.loadResults().then((response) => response.map((it) => it.points)).then((results) => Application.showResult(new SuccessView(this.model.state, this.model.userResult, results))).then(() => splash.stop()).catch((error) => ServerWorker.showError(error));
 
       } else {
         this.goToNextLevel();

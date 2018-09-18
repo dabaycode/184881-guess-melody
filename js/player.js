@@ -1,45 +1,39 @@
-import ServerWorker from './server-worker';
+const playMusic = (btn) => {
+  btn.classList.replace(`track__button--play`, `track__button--pause`);
+
+  const audio = btn.parentNode.querySelector(`audio`);
+  audio.play().catch(() => {});
+};
 
 const pauseMusic = (btn) => {
-  btn.removeEventListener(`click`, pauseHandler);
+  btn.classList.replace(`track__button--pause`, `track__button--play`);
 
-  btn.classList.remove(`track__button--pause`);
-  btn.classList.add(`track__button--play`);
 
   btn.parentNode.querySelector(`audio`).pause();
-
-  btn.addEventListener(`click`, playHandler);
 };
 
-const pauseHandler = (evt) => {
-  const btn = evt.target;
-  pauseMusic(btn);
+const stopMusic = (audioElements) => {
+  Array.from(audioElements).forEach((audio) => audio.pause());
 };
 
-const playMusic = (btn) => {
-  btn.removeEventListener(`click`, playHandler);
+const playerWorker = (btn) => {
+  if (btn.classList.contains(`track__button--play`)) {
 
-  const form = btn.closest(`.game__tracks`);
-  const audio = btn.parentNode.querySelector(`audio`);
+    const form = btn.closest(`.game__tracks`);
 
-  if (form) {
-    const buttonPlay = form.querySelector(`.track__button--pause`);
-    pauseMusic(buttonPlay);
+    if (form) {
+      const playingButton = form.querySelector(`.track__button--pause`);
+
+      if (playingButton) {
+        pauseMusic(playingButton);
+      }
+    }
+
+    playMusic(btn);
+
+  } else if (btn.classList.contains(`track__button--pause`)) {
+    pauseMusic(btn);
   }
-
-  btn.classList.remove(`track__button--play`);
-  btn.classList.add(`track__button--pause`);
-
-  audio.addEventListener(`error`, ServerWorker.showError);
-
-  audio.play();
-
-  btn.addEventListener(`click`, pauseHandler);
 };
 
-const playHandler = (evt) => {
-  const btn = evt.target;
-  playMusic(btn);
-};
-
-export {playHandler, playMusic, pauseMusic, pauseHandler};
+export {playerWorker, stopMusic};

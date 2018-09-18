@@ -16,8 +16,9 @@ const getAnswers = (quantityRight, quantityRightFast, quantityAnswers) => {
 
   const answers = [];
 
-  for (let i = 0; i < quantityRightFast; i++) {
+  while (quantityRightFast) {
     answers.push({isRight: true, time: getRandomInt(0, 30)});
+    quantityRightFast--;
   }
 
   while (answers.length < quantityRight) {

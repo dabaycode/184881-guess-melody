@@ -1,5 +1,5 @@
 import AbstractView from '../views/abstract-view';
-import {pauseHandler, pauseMusic} from '../player';
+import {playerWorker, stopMusic} from '../player';
 import HeaderView from '../views/header-view';
 import ServerWorker from '../server-worker';
 
@@ -49,20 +49,24 @@ export default class ArtistView extends AbstractView {
     const btn = track.querySelector(`.track__button`);
     const inputItems = this.element.querySelectorAll(`.artist__input`);
 
-    const firstAudio = this.element.querySelector(`audio`);
-    firstAudio.setAttribute(`autoplay`, true);
-    firstAudio.addEventListener(`error`, ServerWorker.showError);
+    const audioElements = this.element.querySelectorAll(`audio`);
+    audioElements[0].setAttribute(`autoplay`, true);
 
     btn.classList.replace(`track__button--play`, `track__button--pause`);
 
-    btn.addEventListener(`click`, pauseHandler);
+    const playerHandler = (evt) => {
+      const btnClicked = evt.target;
+
+      playerWorker(btnClicked);
+    };
+
+    btn.addEventListener(`click`, playerHandler);
 
     inputItems.forEach((it) => {
       it.addEventListener(`change`, (evt) => {
+        stopMusic(audioElements);
+
         const answer = [evt.target.value];
-
-        pauseMusic(btn);
-
         this.submitBtnHandler(answer);
       });
     });

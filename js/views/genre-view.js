@@ -1,7 +1,6 @@
 import AbstractView from '../views/abstract-view';
-import {playHandler, pauseHandler, pauseMusic} from '../player';
+import {playerWorker, stopMusic} from '../player';
 import HeaderView from '../views/header-view';
-import ServerWorker from '../server-worker';
 
 const DEBUG = new URLSearchParams(location.search).has(`debug`);
 const DEBUG_STYLE = `style="outline: 2px solid #FF9749; outline-offset: 2px; box-sizing: border-box;"`;
@@ -49,20 +48,17 @@ export default class GenreView extends AbstractView {
 
     const firtsBtn = this.element.querySelector(`.track__button`);
 
+    const audioElements = this.element.querySelectorAll(`audio`);
+    audioElements[0].setAttribute(`autoplay`, true);
+
     firtsBtn.classList.replace(`track__button--play`, `track__button--pause`);
 
-    const firstAudio = this.element.querySelector(`audio`);
-    firstAudio.setAttribute(`autoplay`, true);
-    firstAudio.addEventListener(`error`, ServerWorker.showError);
+    const playerHandler = (evt) => {
+      const btn = evt.target;
+      playerWorker(btn);
+    };
 
-    for (let it of tracks) {
-      let btn = it.querySelector(`.track__button`);
-      if (!btn.classList.contains(`track__button--pause`)) {
-        btn.addEventListener(`click`, playHandler);
-      } else {
-        btn.addEventListener(`click`, pauseHandler);
-      }
-    }
+    Array.from(tracks).map((it) => it.querySelector(`.track__button`)).forEach((btn) => btn.addEventListener(`click`, playerHandler));
 
     const checkInputItems = Array.from(this.element.querySelectorAll(`.game__input`));
     const submitBtn = this.element.querySelector(`.game__submit`);
@@ -71,10 +67,7 @@ export default class GenreView extends AbstractView {
     submitBtn.addEventListener(`click`, (evt) => {
       evt.preventDefault();
 
-      for (let it of tracks) {
-        let btn = it.querySelector(`.track__button`);
-        pauseMusic(btn);
-      }
+      stopMusic(audioElements);
 
       const checkedAnswer = checkInputItems.filter((it) => it.checked).map((element) => element.value);
       this.submitBtnHandler(checkedAnswer);
